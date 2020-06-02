@@ -16,6 +16,14 @@ def user_home(request):
     if request.user.is_authenticated and request.user.is_active:
         context = {'user': request.user}
         return render(request, 'news_scraper/user_home.html',context)
+
+@login_required
+def user_tags(request):
+    return HttpResponse("tags page")
+
+@login_required()
+def user_sources(request):
+    return HttpResponse("sources page")
     
 def guest_home(request):
     return render(request, 'news_scraper/guest_home.html')    
@@ -44,13 +52,16 @@ def user_login(request):
             print("Invalid login credentials: {0}, ***".format(username))
             return HttpResponse("Invalid login details supplied")    
     else:
-        # not a POST method so supply login form
+        # not a POST method so supply login form if not logged in
+        # if logged in, go straight to user home
+        if request.user != None and request.user.is_authenticated and request.user.is_active:
+            return HttpResponseRedirect(reverse('news_scraper:user_home'))
         return render(request, 'news_scraper/login.html')
 
 @login_required()
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect(reverse('news_scraper:base'))
+    return HttpResponseRedirect(reverse('news_scraper:guest_home'))
 
 def register_new_user(request):
     # gives status of registration
