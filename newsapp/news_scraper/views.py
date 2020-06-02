@@ -1,18 +1,56 @@
 from django.shortcuts import render
 from .forms import UserForm, UserProfileForm
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 from .models import User, UserProfile
+
 
 # Create your views here.
 
-def user_home(request, user_name):
-    user = get_object_or_404(User, username=user_name)
-    if user != Http404:
-        profile = user.userprofile
-        return HttpResponse("USER HOME (not implemented). " + user_name + " exists.")
+@login_required()
+def user_home(request):
+    if request.user.is_authenticated and request.user.is_active:
+        context = {'user': request.user}
+        return render(request, 'news_scraper/user_home.html',context)
+    
+def guest_home(request):
+    return render(request, 'news_scraper/guest_home.html')    
+
+def user_login(request):
+    # if is post method check for relevant data
+    if request.method == 'POST':
+        # get username and password.
+        # use the POST.get method so it returns None 
+        # instead of erroring if field left empty
+        username = request.POST.get('username')
+        password = request.POST.get('password')  
+
+        # check whether user exists in DB
+        user = authenticate(username=username, password=password)
+        # will return None if doesn't exist
+
+        if user:
+            if user.is_active:
+                # valid and active
+                login(request, user) 
+                return HttpResponseRedirect(reverse('news_scraper:user_home'))               
+            else:
+                return HttpResponse("This account has been disabled.")
+        else:
+            print("Invalid login credentials: {0}, ***".format(username))
+            return HttpResponse("Invalid login details supplied")    
     else:
-        return Http404("could not find specified user")
+        # not a POST method so supply login form
+        return render(request, 'news_scraper/login.html')
+
+@login_required()
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('news_scraper:base'))
 
 def register_new_user(request):
     # gives status of registration

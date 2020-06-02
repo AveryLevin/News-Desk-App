@@ -1,0 +1,22 @@
+{% extends 'news_scraper/base.html' %}
+
+
+{% block title %}
+    {{user.username.capitalize}}'s News Desk
+{% endblock title %}
+    
+
+{% block body %}
+
+
+    <h1>{{user.username.capitalize}}'s News Desk</h1>
+    <h3>Here, you can access articles that will interest you and manage your tags and sources</h3>
+    <br>
+
+    <a href="" class=button>Manage Sources</a>
+
+    <a href="" class=button>Manage Tags</a>
+
+    <a href="{% url 'news_scraper:logout' %}" class=button>Logout</a>
+
+{% endblock body %}

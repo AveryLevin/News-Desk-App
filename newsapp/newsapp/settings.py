@@ -122,6 +122,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+LOGIN_URL = '/news/login/'
+
 # MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 # MEDIA_ROOT = MEDIA_DIR 
 # MEDIA_URL = '/ media/'
