@@ -13,9 +13,9 @@
     <h3>Here, you can access articles that will interest you and manage your tags and sources</h3>
     <br>
 
-    <a href="" class=button>Manage Sources</a>
+    <a href="{% url 'news_scraper:user_sources' %}" class=button>Manage Sources</a>
 
-    <a href="" class=button>Manage Tags</a>
+    <a href="{% url 'news_scraper:user_tags' %}" class=button>Manage Tags</a>
 
     <a href="{% url 'news_scraper:logout' %}" class=button>Logout</a>
 

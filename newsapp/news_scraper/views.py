@@ -19,13 +19,19 @@ def user_home(request):
 
 @login_required
 def user_tags(request):
-    return HttpResponse("tags page")
+    if request.user.is_authenticated and request.user.is_active:
+        context = {'user': request.user}
+        return render(request, 'news_scraper/user_tags.html',context)
 
 @login_required()
 def user_sources(request):
-    return HttpResponse("sources page")
-    
+    if request.user.is_authenticated and request.user.is_active:
+        context = {'user': request.user}
+        return render(request, 'news_scraper/user_sources.html',context)   
+             
 def guest_home(request):
+    if request.user != None and request.user.is_authenticated and request.user.is_active:
+        return HttpResponseRedirect(reverse('news_scraper:user_home'))
     return render(request, 'news_scraper/guest_home.html')    
 
 def user_login(request):

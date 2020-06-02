@@ -1,0 +1,16 @@
+{% extends 'news_scraper/base.html' %}
+
+
+{% block title %}
+    {{user.username.capitalize}}'s News Sources
+{% endblock title %}
+    
+
+{% block body %}
+
+
+    <h1>{{user.username.capitalize}}'s News Sources</h1>
+    <h3>Here, you can choose the news outlets you want to get your articles from.</h3>
+    <br>
+
+{% endblock body %}

@@ -1,0 +1,16 @@
+{% extends 'news_scraper/base.html' %}
+
+
+{% block title %}
+    {{user.username.capitalize}}'s News Tags
+{% endblock title %}
+    
+
+{% block body %}
+
+
+    <h1>{{user.username.capitalize}}'s News Tags</h1>
+    <h3>Here, you can choose specific topics of news coverage you're interested in.</h3>
+    <br>
+
+{% endblock body %}
