@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+
+<body>
+    <h1>Register for News Desk</h1>
+    {% if registered %}
+    <strong>Thanks for registering!</strong>
+    <a href="{% url 'news_scraper:user_home' username %}" class=button>Return to Homepage</a>
+    {% else %}
+    <strong>Register here</strong>
+    <form id="user_form" method="post" action="{% url 'news_scraper:register' %}" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        <!-- Display the forms -->
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+
+        <input type="submit" name="submit" value="Register">
+    </form>
+    {% endif %}
+</body>
+
+</html>
