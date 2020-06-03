@@ -2,15 +2,61 @@
 
 
 {% block title %}
-    {{user.username.capitalize}}'s News Tags
+{{user.username.capitalize}}'s News Tags
 {% endblock title %}
-    
+
 
 {% block body %}
 
 
-    <h1>{{user.username.capitalize}}'s News Tags</h1>
-    <h3>Here, you can choose specific topics of news coverage you're interested in.</h3>
+<h1>{{user.username.capitalize}}'s News Tags</h1>
+<h3>Here, you can choose specific topics of news coverage you're interested in.</h3>
+<br>
+
+<div class="tags_list">
+
+
+    {% if user_tags %}
+    <ul>
+        <h4>Your current tags:</h4>
+        {% for tag in user_tags %}
+        <li class="tag_item">
+            {{ tag.name }}
+            <button>Delete Tag</button>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h4>You currently have no tags</h4>
+    {% endif %}
+
     <br>
+
+    {% if popular_tags %}
+    <ul>
+        <h4>Here are some trending tags:</h4>
+        {% for tag in popular_tags %}
+        <li class="tag_item">
+            {{ tag.name }}
+
+            <!-- IMPLEMENT ME -->
+            <button>Add Tag</button>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <br>
+
+    <h4>Create your own tag:</h4>
+    <form id="add_tag_form" action="{% url 'news_scraper:user_tags' %}" method="post">
+        {% csrf_token %}
+        Tag: <input type="text" name="tag" value="" size="50">
+        <br />
+
+        <input type="submit" name="" id="" value="Add">
+    </form>
+
+</div>
 
 {% endblock body %}

@@ -2,15 +2,54 @@
 
 
 {% block title %}
-    {{user.username.capitalize}}'s News Sources
+{{user.username.capitalize}}'s News Sources
 {% endblock title %}
-    
+
 
 {% block body %}
 
 
-    <h1>{{user.username.capitalize}}'s News Sources</h1>
-    <h3>Here, you can choose the news outlets you want to get your articles from.</h3>
-    <br>
+<h1>{{user.username.capitalize}}'s News Sources</h1>
+<h3>Here, you can choose the news outlets you want to get your articles from.</h3>
+<br>
+
+<div class="user_sources">
+
+    {% if user_sources %}
+    <h4>Your current sources:</h4>
+    
+    <ul>
+        {% for own_source in user_sources %}
+        <li class="source_item">
+            {{ own_source.name }}
+            
+            <!-- IMPLEMENT ME -->
+            <button>Remove Source</button>
+        </li>
+        {% endfor %}
+
+    </ul>
+    {% endif %}
+
+
+    {% if new_sources %}
+    <h4>Other availabe sources:</h4>
+    
+    <ul>
+
+        {% for new_source in new_sources %}
+        <li class="source_item">
+            {{ new_source.name }}
+            
+            <!-- IMPLEMENT ME -->
+            <button>Add Source</button>
+        </li>
+        {% endfor %}
+
+    </ul>
+    {% endif %}
+
+
+</div>
 
 {% endblock body %}
