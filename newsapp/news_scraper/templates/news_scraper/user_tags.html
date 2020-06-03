@@ -1,14 +1,15 @@
-{% extends 'news_scraper/base.html' %}
+{% extends 'news_scraper/base.html' %} 
 
+{% block head %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'news_scraper/css/user_tags.css' %}"> 
+{% endblock %} 
 
-{% block title %}
-{{user.username.capitalize}}'s News Tags
-{% endblock title %}
-
+{% block title %} 
+{{user.username.capitalize}}'s News Tags 
+{% endblock title %} 
 
 {% block body %}
-
-
 <h1>{{user.username.capitalize}}'s News Tags</h1>
 <h3>Here, you can choose specific topics of news coverage you're interested in.</h3>
 <br>
@@ -17,12 +18,13 @@
 
 
     {% if user_tags %}
-    <ul>
+    <ul class="tags-list">
         <h4>Your current tags:</h4>
+        <div class="hztl-line"></div>
         {% for tag in user_tags %}
-        <li class="tag_item">
-            {{ tag.name }}
-            <button>Delete Tag</button>
+        <li class="tag-item">
+            <div class="left-side">{{ tag.name }}</div>
+            <button class="edit-tag">Delete Tag</button>
         </li>
         {% endfor %}
     </ul>
@@ -30,32 +32,31 @@
     <h4>You currently have no tags</h4>
     {% endif %}
 
-    <br>
-
-    {% if popular_tags %}
-    <ul>
+    <br> {% if popular_tags %}
+    <ul class="tags-list">
         <h4>Here are some trending tags:</h4>
+        <div class="hztl-line"></div>
         {% for tag in popular_tags %}
-        <li class="tag_item">
-            {{ tag.name }}
+        <li class="tag-item">
+            <div class="left-side">{{ tag.name }}</div>
 
             <!-- IMPLEMENT ME -->
-            <button>Add Tag</button>
+            <button class="edit-tag">Add Tag</button>
         </li>
         {% endfor %}
     </ul>
     {% endif %}
 
     <br>
+    <div class="tag-form">
+        <h4>Create your own tag:</h4>
+        <form id="add_tag_form" action="{% url 'news_scraper:user_tags' %}" method="post">
+            {% csrf_token %} Tag: <input type="text" name="tag" value="" size="50">
+            <br />
 
-    <h4>Create your own tag:</h4>
-    <form id="add_tag_form" action="{% url 'news_scraper:user_tags' %}" method="post">
-        {% csrf_token %}
-        Tag: <input type="text" name="tag" value="" size="50">
-        <br />
-
-        <input type="submit" name="" id="" value="Add">
-    </form>
+            <input class="button" type="submit" name="" id="" value="Add">
+        </form>
+    </div>
 
 </div>
 

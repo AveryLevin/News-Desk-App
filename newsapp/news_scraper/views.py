@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import QuerySet
 
 from .models import User, UserProfile, Source, Tag
+from .scraper_module import SourceScraper
 
 
 # Create your views here.
@@ -15,7 +16,23 @@ from .models import User, UserProfile, Source, Tag
 @login_required()
 def user_home(request):
     if request.user.is_authenticated and request.user.is_active:
-        context = {'user': request.user}
+
+        profile = request.user.userprofile
+        sources = list(profile.sources_list.all())
+        tags = list(profile.tags_list.all())
+
+        articles = [] 
+        if sources and tags:
+            # if user has sources and tags saved, the page should load current articles
+            
+            for source in sources:
+                scraper = SourceScraper(source=source, tags=tags)
+                articles.extend(scraper.parse())
+
+        context = {
+            'user': request.user,
+            'articles': articles
+            }
         return render(request, 'news_scraper/user_home.html', context)
 
 
@@ -48,7 +65,7 @@ def user_tags(request):
             print(user_tags)
             all_tags = Tag.objects.all()
             print(all_tags)
-            popular_tags = all_tags.difference(user_tags)
+            popular_tags = all_tags.difference(user_tags).order_by('-adds')
             print(popular_tags)
             """for tag in popular_tags:
                 if tag in user_tags or tag.adds <= 0:
@@ -69,12 +86,9 @@ def user_sources(request):
 
         profile = request.user.userprofile
 
-        user_sources = profile.sources_list.all().order_by('-name')
-        new_sources = Source.objects.order_by('-name')
-
-        for src in new_sources:
-            if src in user_sources:
-                new_sources.remove(src)
+        user_sources = profile.sources_list.all()
+        all_sources = Source.objects.all()
+        new_sources = all_sources.difference(user_sources).order_by('-name')
 
         context = {
             'user': request.user,

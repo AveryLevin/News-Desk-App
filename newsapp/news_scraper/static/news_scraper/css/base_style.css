@@ -1,0 +1,45 @@
+:root {
+    --dusty: #96858f;
+    --lavender: #6d7993;
+    --overcast: #9099a2;
+    --paper: #d5d5d5;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(80, 73, 73);
+    margin: 0px;
+    background: var(--paper);
+}
+
+.button,
+button {
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--dusty);
+    cursor: pointer;
+    height: 30px;
+    color: white;
+    width: 80px;
+    font-size: 14px;
+}
+
+.page-header {
+    background: linear-gradient(-90deg, var(--overcast), var(--lavender));
+    font-size: 25px;
+    padding: 5px;
+    color: white;
+}
+
+.page-title {
+    text-decoration: none;
+    color: var(--paper);
+}
+
+input {
+    background-color: var(--paper);
+    height: 30px;
+    border-radius: 4px;
+    font-size: 16px;
+}

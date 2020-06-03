@@ -1,0 +1,5 @@
+.button {
+    text-decoration: none;
+    color: var(--paper);
+    padding: 4px;
+}
