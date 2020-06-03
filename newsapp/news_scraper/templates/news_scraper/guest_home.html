@@ -1,13 +1,5 @@
-{% extends 'news_scraper/base.html' %}
-
-
-{% block title %}
-    Welcome to News Desk
-{% endblock title %}
-
-
-{% block body %}
-    <a href="{% url 'news_scraper:login' %}" class="button">Login</a>
-    <a href="{% url 'news_scraper:register' %}" class="button">Create Account</a>
-{% endblock body %}
-    
+{% extends 'news_scraper/base.html' %} {% block head %} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'news_scraper/css/guest.css' %}"> {% endblock %} {% block title %} Welcome to News Desk {% endblock title %} {% block body %}
+<br>
+<a href="{% url 'news_scraper:login' %}" class="button">Login</a>
+<a href="{% url 'news_scraper:register' %}" class="button">Create Account</a> {% endblock body %}

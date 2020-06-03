@@ -1,10 +1,13 @@
 {% extends 'news_scraper/base.html' %}
 
+{% block head %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'news_scraper/css/user_sources.css' %}">
+{% endblock %}
 
 {% block title %}
 {{user.username.capitalize}}'s News Sources
 {% endblock title %}
-
 
 {% block body %}
 
@@ -16,15 +19,15 @@
 <div class="user_sources">
 
     {% if user_sources %}
-    <h4>Your current sources:</h4>
-    
-    <ul>
+
+    <ul class="source-list">
+        <h4>Your current sources:</h4>
         {% for own_source in user_sources %}
-        <li class="source_item">
-            {{ own_source.name }}
-            
+        <li class="source-item">
+            <div class=left-side>{{ own_source.name }}</div>
+
             <!-- IMPLEMENT ME -->
-            <button>Remove Source</button>
+            <button class="edit-source">Remove Source</button>
         </li>
         {% endfor %}
 
@@ -33,16 +36,16 @@
 
 
     {% if new_sources %}
-    <h4>Other availabe sources:</h4>
-    
-    <ul>
 
+
+    <ul class="source-list">
+        <h4>Other availabe sources:</h4>
         {% for new_source in new_sources %}
-        <li class="source_item">
-            {{ new_source.name }}
-            
+        <li class="source-item">
+            <div class=left-side>{{ new_source.name }}</div>
+
             <!-- IMPLEMENT ME -->
-            <button>Add Source</button>
+            <button class="edit-source">Add Source</button>
         </li>
         {% endfor %}
 
