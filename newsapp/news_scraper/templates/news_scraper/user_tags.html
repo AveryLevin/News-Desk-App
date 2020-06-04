@@ -10,12 +10,13 @@
 {% endblock title %}
 
 {% block body %}
+
 <h1>{{user.username.capitalize}}'s News Tags</h1>
 <h3>Here, you can choose specific topics of news coverage you're interested in.</h3>
 <br>
 
 <div id="app" class="tags_list">
-
+    [[tag]]
 
     {% if user_tags %}
     <form id="remove_form" action="{% url 'news_scraper:user_tags' %}" method="post">
@@ -28,8 +29,9 @@
             <li class="tag-item">
                 <div class="left-side">{{ tag.name }}</div>
 
-                <input @click="updateValue('{{tag.name}}')"type="submit" id="rm_tag" class="edit-tag" name="action" value="Delete Tag"></input>
-           </li>
+                <input @click="updateValue('{{tag.name}}')" type="submit" id="rm_tag" class="edit-tag" name="action"
+                    value="Delete Tag"></input>
+            </li>
             {% endfor %}
         </ul>
     </form>
@@ -37,32 +39,42 @@
     <h4>You currently have no tags</h4>
     {% endif %}
 
-    <br> {% if popular_tags %}
-    <ul class="tags-list">
-        <h4>Here are some trending tags:</h4>
-        <div class="hztl-line"></div>
-        {% for tag in popular_tags %}
-        <li class="tag-item">
-            <div class="left-side">{{ tag.name }}</div>
+    <br>
+    {% if popular_tags %}
+    <form id="add_form" action="{% url 'news_scraper:user_tags' %}" method="post">
+        {% csrf_token %}
+        <input id="tag" name="tag-name" type="hidden" :value="tag">
+        <ul class="tags-list">
+            <h4>Here are some trending tags:</h4>
+            <div class="hztl-line"></div>
+            {% for tag in popular_tags %}
+            <li class="tag-item">
+                <div class="left-side">{{ tag.name }}</div>
 
-            <!-- IMPLEMENT ME -->
-            <button class="edit-tag">Add Tag</button>
-        </li>
-        {% endfor %}
-    </ul>
+                <!-- IMPLEMENT ME -->
+                <input @click="updateValue('{{tag.name}}')" type="submit" id="rm_tag" class="edit-tag" name="action"
+                    value="Add Tag"></input>
+            </li>
+            {% endfor %}
+        </ul>
+    </form>
     {% endif %}
 
     <br>
     <div class="tag-form">
         <h4>Create your own tag:</h4>
-        <form id="add_tag_form" action="{% url 'news_scraper:user_tags' %}" method="post">
-            {% csrf_token %} Tag: <input type="text" name="tag" value="" size="50">
+        <form id="add_free_form" action="{% url 'news_scraper:user_tags' %}" method="post">
+            {% csrf_token %} Tag: <input type="text" name="tag-name" value="" size="50">
             <br />
 
-            <input class="button" type="submit" name="" id="" value="Add">
+            <input class="button" type="submit" id="" name="action" value="Add">
         </form>
     </div>
 
 </div>
+
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="{% static 'news_scraper/scripts/user_tags.js'%}"></script>
 
 {% endblock body %}

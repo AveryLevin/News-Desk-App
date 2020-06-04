@@ -44,17 +44,29 @@ def user_tags(request):
 
         if request.method == 'POST':
 
-            tag_name = request.POST.get('tag')
+            action = request.POST.get('action')
+            tag_name = request.POST.get('tag-name')
+            print(":::", type(tag_name))
+            if action == 'Add' or action == 'Add Tag':
+                try:
+                    tag = Tag.objects.get(name=tag_name)
+                    tag.adds += 1
+                except:
+                    tag = Tag(name=tag_name, adds=1)
 
-            try:
-                add_tag = Tag.objects.get(name=tag_name)
-                add_tag.adds += 1
-            except:
-                add_tag = Tag(name=tag_name, adds=1)
+                tag.save()
+                profile.tags_list.add(tag)
 
-            add_tag.save()
+            elif action == 'Delete Tag':
+                try:
+                    tag = Tag.objects.get(name=tag_name)
+                    tag.adds -= 1
+                except:
+                    return Http404("Couldn't find Tag")
 
-            profile.tags_list.add(add_tag)
+                tag.save()
+                profile.tags_list.remove(tag)
+            
             profile.save()
 
             return HttpResponseRedirect(reverse('news_scraper:user_tags'))
@@ -62,11 +74,11 @@ def user_tags(request):
         else:
 
             user_tags = profile.tags_list.all()
-            print(user_tags)
+            
             all_tags = Tag.objects.all()
-            print(all_tags)
+            
             popular_tags = all_tags.difference(user_tags).order_by('-adds')
-            print(popular_tags)
+            
             """for tag in popular_tags:
                 if tag in user_tags or tag.adds <= 0:
                     popular_tags.remove(tag)"""
@@ -90,10 +102,10 @@ def user_sources(request):
 
             action = request.POST.get('action')
             source_name = request.POST.get('source-name')
-            print(source_name)
+            
             if action == 'Add Source':
                 try:
-                    print(type(source_name))
+                    
                     source = Source.objects.get(name=source_name)
                     profile.sources_list.add(source)
                 except:
@@ -102,7 +114,7 @@ def user_sources(request):
 
             elif action == 'Remove Source':
                 try:
-                    print(source_name)
+                    
                     source = profile.sources_list.get(name=source_name)
                     profile.sources_list.remove(source)
                 except:

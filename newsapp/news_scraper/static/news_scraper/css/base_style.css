@@ -12,6 +12,7 @@ body {
     background: var(--paper);
 }
 
+input[type=submit],
 .button,
 button {
     margin: 5px;
