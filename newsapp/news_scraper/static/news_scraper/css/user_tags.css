@@ -30,6 +30,7 @@
     border-style: solid;
     border-color: var(--lavender);
     border-radius: 4px;
+    box-shadow: 2px 2px 2px var(--dusty);
     padding-left: 30px;
     padding-top: 2px;
     padding-bottom: 03px;

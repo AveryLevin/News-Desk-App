@@ -16,8 +16,11 @@ input[type=submit],
 .button,
 button {
     margin: 5px;
-    border: none;
+    border-style: solid;
+    border-color: black;
+    border-width: thin;
     border-radius: 4px;
+    box-shadow: 1px 1px 2px var(--lavender);
     background-color: var(--dusty);
     cursor: pointer;
     height: 30px;
@@ -38,9 +41,15 @@ button {
     color: var(--paper);
 }
 
-input[type=text] {
+input[type=text],
+input[type=password] {
+    margin: 10px;
     background-color: rgb(232, 240, 254);
     height: 30px;
     border-radius: 4px;
     font-size: 16px;
+}
+
+#login_form {
+    margin-left: 20px;
 }

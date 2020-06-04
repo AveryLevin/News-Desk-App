@@ -9,9 +9,10 @@ Login
 {% block body %}
 
 
-<h1>Login to News Desk</h1>
+
 <!--    HINT: url must include app_name if it's been defined-->
 <form id="login_form" action="{% url 'news_scraper:login' %}" method="post">
+    <h1>Login to News Desk</h1>
     {% csrf_token %}
     Username: <input type="text" name="username" value="" size="50">
     <br />
