@@ -21,10 +21,10 @@ def user_home(request):
         sources = list(profile.sources_list.all())
         tags = list(profile.tags_list.all())
 
-        articles = [] 
+        articles = []
         if sources and tags:
             # if user has sources and tags saved, the page should load current articles
-            
+
             for source in sources:
                 scraper = SourceScraper(source=source, tags=tags)
                 articles.extend(scraper.parse())
@@ -32,7 +32,7 @@ def user_home(request):
         context = {
             'user': request.user,
             'articles': articles
-            }
+        }
         return render(request, 'news_scraper/user_home.html', context)
 
 
@@ -86,16 +86,43 @@ def user_sources(request):
 
         profile = request.user.userprofile
 
-        user_sources = profile.sources_list.all()
-        all_sources = Source.objects.all()
-        new_sources = all_sources.difference(user_sources).order_by('-name')
+        if request.method == 'POST':
 
-        context = {
-            'user': request.user,
-            'user_sources': user_sources,
-            'new_sources': new_sources
-        }
-        return render(request, 'news_scraper/user_sources.html', context)
+            action = request.POST.get('action')
+            source_name = request.POST.get('source-name')
+            print(source_name)
+            if action == 'Add Source':
+                try:
+                    print(type(source_name))
+                    source = Source.objects.get(name=source_name)
+                    profile.sources_list.add(source)
+                except:
+                    print("Couldn't find source.")
+                    return Http404("Couldn't find source.")
+
+            elif action == 'Remove Source':
+                try:
+                    print(source_name)
+                    source = profile.sources_list.get(name=source_name)
+                    profile.sources_list.remove(source)
+                except:
+                    print("Couldn't find source.")
+                    return Http404("Couldn't find source.")
+            profile.save()
+
+            return HttpResponseRedirect(reverse('news_scraper:user_sources'))
+
+        else:
+            user_sources = profile.sources_list.all()
+            all_sources = Source.objects.all()
+            new_sources = all_sources.difference(user_sources).order_by('-name')
+
+            context = {
+                'user': request.user,
+                'user_sources': user_sources,
+                'new_sources': new_sources
+            }
+            return render(request, 'news_scraper/user_sources.html', context)
 
 
 def guest_home(request):

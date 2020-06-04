@@ -55,6 +55,15 @@
 }
 
 .edit-source {
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--dusty);
+    cursor: pointer;
+    height: 30px;
+    color: white;
+    width: 80px;
+    font-size: 14px;
     float: right;
     transform: translate(0px, -35px);
     size: 100%;

@@ -37,7 +37,7 @@ button {
     color: var(--paper);
 }
 
-input {
+input[type=text] {
     background-color: rgb(232, 240, 254);
     height: 30px;
     border-radius: 4px;

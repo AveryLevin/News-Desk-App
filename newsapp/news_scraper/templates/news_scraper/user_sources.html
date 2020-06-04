@@ -16,43 +16,52 @@
 <h3>Here, you can choose the news outlets you want to get your articles from.</h3>
 <br>
 
-<div class="user_sources">
+<div id="app" class="user_sources">
 
     {% if user_sources %}
+    <form id="remove_form" action="{% url 'news_scraper:user_sources' %}" method="post">
+        {% csrf_token %}
+        <input id="source" name="source-name" type="hidden" :value="src">
+        <ul class="source-list">
+            <h4>Your current sources:</h4>
+            {% for own_source in user_sources %}
+            <li class="source-item">
+                <div class=left-side>{{ own_source.name }}</div>
+                <!-- IMPLEMENT ME -->
+                
+                <input @click="updateValue('{{own_source.name}}')"type="submit" id="rm_src" class="edit-source" name="action" value="Remove Source"></input>
+            </li>
+            {% endfor %}
 
-    <ul class="source-list">
-        <h4>Your current sources:</h4>
-        {% for own_source in user_sources %}
-        <li class="source-item">
-            <div class=left-side>{{ own_source.name }}</div>
-
-            <!-- IMPLEMENT ME -->
-            <button class="edit-source">Remove Source</button>
-        </li>
-        {% endfor %}
-
-    </ul>
+        </ul>
+    </form>
     {% endif %}
 
 
     {% if new_sources %}
+    <form id="add_form" action="{% url 'news_scraper:user_sources' %}" method="post">
+        {% csrf_token %}
+        <input id="source" name="source-name" type="hidden" :value="src">
+        <ul class="source-list">
+            <h4>Other availabe sources:</h4>
+            {% for new_source in new_sources %}
+            <li class="source-item">
+                <div class=left-side>{{ new_source.name }}</div>
 
+                <!-- IMPLEMENT ME -->
+                <input @click="updateValue('{{new_source.name}}')" type="submit" id="ad_src" class="edit-source" name="action" value="Add Source"></input>
+            </li>
+            {% endfor %}
 
-    <ul class="source-list">
-        <h4>Other availabe sources:</h4>
-        {% for new_source in new_sources %}
-        <li class="source-item">
-            <div class=left-side>{{ new_source.name }}</div>
-
-            <!-- IMPLEMENT ME -->
-            <button class="edit-source">Add Source</button>
-        </li>
-        {% endfor %}
-
-    </ul>
+        </ul>
+    </form>
     {% endif %}
 
-
+    [[src]]
 </div>
 
+
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="{% static 'news_scraper/scripts/user_sources.js'%}"></script>
 {% endblock body %}

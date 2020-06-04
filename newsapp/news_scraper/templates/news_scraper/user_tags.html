@@ -1,33 +1,38 @@
-{% extends 'news_scraper/base.html' %} 
+{% extends 'news_scraper/base.html' %}
 
 {% block head %}
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'news_scraper/css/user_tags.css' %}"> 
-{% endblock %} 
+<link rel="stylesheet" type="text/css" href="{% static 'news_scraper/css/user_tags.css' %}">
+{% endblock %}
 
-{% block title %} 
-{{user.username.capitalize}}'s News Tags 
-{% endblock title %} 
+{% block title %}
+{{user.username.capitalize}}'s News Tags
+{% endblock title %}
 
 {% block body %}
 <h1>{{user.username.capitalize}}'s News Tags</h1>
 <h3>Here, you can choose specific topics of news coverage you're interested in.</h3>
 <br>
 
-<div class="tags_list">
+<div id="app" class="tags_list">
 
 
     {% if user_tags %}
-    <ul class="tags-list">
-        <h4>Your current tags:</h4>
-        <div class="hztl-line"></div>
-        {% for tag in user_tags %}
-        <li class="tag-item">
-            <div class="left-side">{{ tag.name }}</div>
-            <button class="edit-tag">Delete Tag</button>
-        </li>
-        {% endfor %}
-    </ul>
+    <form id="remove_form" action="{% url 'news_scraper:user_tags' %}" method="post">
+        {% csrf_token %}
+        <input id="tag" name="tag-name" type="hidden" :value="tag">
+        <ul class="tags-list">
+            <h4>Your current tags:</h4>
+            <div class="hztl-line"></div>
+            {% for tag in user_tags %}
+            <li class="tag-item">
+                <div class="left-side">{{ tag.name }}</div>
+
+                <input @click="updateValue('{{tag.name}}')"type="submit" id="rm_tag" class="edit-tag" name="action" value="Delete Tag"></input>
+           </li>
+            {% endfor %}
+        </ul>
+    </form>
     {% else %}
     <h4>You currently have no tags</h4>
     {% endif %}
