@@ -42,7 +42,8 @@ button {
 }
 
 input[type=text],
-input[type=password] {
+input[type=password],
+input[type=email] {
     margin: 10px;
     background-color: rgb(232, 240, 254);
     height: 30px;

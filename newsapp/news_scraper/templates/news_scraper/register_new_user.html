@@ -11,13 +11,14 @@ Register
 
 
 {% block body %}
-
-<h1>Register for News Desk</h1>
-{% if registered %}
-<strong>Thanks for registering!</strong>
-<a href="{% url 'news_scraper:user_home' %}" class=button>Return to Homepage</a>
-{% else %}
-<strong>Register here</strong>
+<div class="title-header">
+    <h1>Register for News Desk</h1>
+    {% if registered %}
+    <strong>Thanks for registering!</strong>
+    <a href="{% url 'news_scraper:user_home' %}" class=button>Return to Homepage</a>
+    {% else %}
+    <strong>Register here</strong>
+</div>
 <form id="user_form" method="post" action="{% url 'news_scraper:register' %}" enctype="multipart/form-data">
 
     {% csrf_token %}
