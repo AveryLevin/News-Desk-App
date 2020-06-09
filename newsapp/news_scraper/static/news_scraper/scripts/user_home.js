@@ -1,18 +1,22 @@
-
-var userHomeData = {
+Vue.config.devtools = true;
+var userHomeDataSample = {
     articleListData: [
         {
-            articleTitle: "Test Title 1",
-            articleSource: "Test Source 1",
-            articleRedirLink: "https://www.google.com/"
+            title: "Test Title 1",
+            source: "Test Source 1",
+            redir: "https://www.google.com/"
         },
         {
-            articleTitle: "Test Title 2",
-            articleSource: "Test Source 2",
-            articleRedirLink: "https://www.bing.com/"
+            title: "Test Title 2",
+            source: "Test Source 2",
+            redir: "https://www.bing.com/"
         },
     ]
 };
+
+var userHomeData = JSON.parse(document.getElementById('user-home-data').textContent);
+console.log(userHomeDataSample)
+console.log(userHomeData)
 
 Vue.component('article-item', {
     delimiters: ['[[', ']]'],

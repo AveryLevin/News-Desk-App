@@ -12,6 +12,8 @@
 
 {% block body %}
 
+{{ articles_json|json_script:"user-home-data" }}
+
 <div class=top>
     <h1>{{user.username.capitalize}}'s News Desk</h1>
     <h3>Here, you can access articles that will interest you and manage your tags and sources</h3>
@@ -28,12 +30,12 @@
     <ul class="article-list">
         <h4>Here are some articles that might interest you</h4>
         <div class="hztl-line"></div>
-        <article-item
-        v-for="article in articles"
-        v-bind:article-title="article.articleTitle"
-        v-bind:article-source="article.articleSource"
-        v-bind:article-redir-link="article.articleRedirLink"
-        ></article-item>
+        <article-item 
+            v-for="article in articles" 
+            v-bind:article-title="article.title"
+            v-bind:article-source="article.source" 
+            v-bind:article-redir-link="article.redir">
+        </article-item>
 
     </ul>
 </div>

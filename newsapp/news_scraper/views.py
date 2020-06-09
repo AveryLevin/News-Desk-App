@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import UserForm, UserProfileForm
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -10,6 +10,7 @@ from django.db.models import QuerySet
 from .models import User, UserProfile, Source, Tag
 from .scraper_module import SourceScraper
 
+import json
 
 # Create your views here.
 
@@ -29,11 +30,31 @@ def user_home(request):
                 scraper = SourceScraper(source=source, tags=tags)
                 articles.extend(scraper.parse())
 
+        articles = dictify(articles)
         context = {
             'user': request.user,
-            'articles': articles
+            'articles_json': {
+                'articleListData': articles
+            }
         }
         return render(request, 'news_scraper/user_home.html', context)
+
+
+def dictify(articles: list) -> list:
+    if articles:
+        articles_list = []
+
+        for article in articles:
+            article_dict = {
+                "title": article.title,
+                "source": article.source,
+                "redir": article.redir 
+            }
+            articles_list.append(article_dict)
+
+        return articles_list
+    else:
+        return None
 
 
 @login_required
