@@ -20,13 +20,20 @@ console.log(userHomeData)
 
 Vue.component('article-item', {
     delimiters: ['[[', ']]'],
+    data: function() {
+        return {
+            classType: "article-item-light"
+        }
+    },
     props: {
         articleTitle: String,
         articleSource: String,
         articleRedirLink: String
     },
     template: `
-    <div class="article-item">
+    <div :class="classType" 
+        @mouseover="makeItemDark"
+        @mouseleave="makeItemLight">
             <a :href="articleRedirLink">
                 <article class="article_block">
                     [[  articleTitle  ]] -- [[ articleSource ]]
@@ -38,7 +45,12 @@ Vue.component('article-item', {
 
     },
     methods: {
-
+        makeItemDark: function() {
+            this.classType = "article-item-dark";
+        },
+        makeItemLight: function() {
+            this.classType = "article-item-light";
+        }
     }
 });
 
