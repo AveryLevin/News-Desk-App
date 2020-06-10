@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import QuerySet
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, UserProfile, Source, Tag
 from .scraper_module import SourceScraper
@@ -30,7 +31,7 @@ def user_home(request):
                 scraper = SourceScraper(source=source, tags=tags)
                 articles.extend(scraper.parse())
 
-        articles = dictify(articles)
+        articles = dictify('articles', articles)
         context = {
             'user': request.user,
             'articles_json': {
@@ -40,21 +41,24 @@ def user_home(request):
         return render(request, 'news_scraper/user_home.html', context)
 
 
-def dictify(articles: list) -> list:
-    if articles:
-        articles_list = []
+def dictify(m_arg: str, m_list: list) -> list:
+    if m_arg == 'articles':
+        articles = m_list
+        if articles:
+            articles_list = []
 
-        for article in articles:
-            article_dict = {
-                "title": article.title,
-                "source": article.source,
-                "redir": article.redir 
-            }
-            articles_list.append(article_dict)
+            for article in articles:
+                article_dict = {
+                    "title": article.title,
+                    "source": article.source,
+                    "redir": article.redir 
+                }
+                articles_list.append(article_dict)
 
-        return articles_list
-    else:
-        return None
+            return articles_list
+
+    return None
+    
 
 
 @login_required
@@ -112,7 +116,7 @@ def user_tags(request):
             }
             return render(request, 'news_scraper/user_tags.html', context)
 
-
+@csrf_exempt
 @login_required()
 def user_sources(request):
     if request.user.is_authenticated and request.user.is_active:

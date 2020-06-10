@@ -11,6 +11,7 @@
 
 {% block body %}
 
+<script>csrftoken = "{{csrf_token}}" </script>
 
 <h1>{{user.username.capitalize}}'s News Sources</h1>
 <h3>Here, you can choose the news outlets you want to get your articles from.</h3>
@@ -18,34 +19,27 @@
 
 <div id="app" class="user_sources">
 
-    {% if user_sources %}
     <form id="remove_form" action="{% url 'news_scraper:user_sources' %}" method="post">
-        {% csrf_token %}
-        <input id="source" name="source-name" type="hidden" :value="src">
+        
         <ul class="source-list">
             <h4>Your current sources:</h4>
-            {% for own_source in user_sources %}
-            <li class="source-item">
-                <div class=left-side>{{ own_source.name }}</div>
-                <!-- IMPLEMENT ME -->
-                
-                <input @click="updateValue('{{own_source.name}}')"type="submit" id="rm_src" class="edit-source" name="action" value="Remove Source"></input>
-            </li>
-            {% endfor %}
+            <current-source-item
+            v-for="source in currentSources"
+            v-bind:name="source.name">
+        </current-source-item>
 
         </ul>
     </form>
-    {% endif %}
 
 
     {% if new_sources %}
     <form id="add_form" action="{% url 'news_scraper:user_sources' %}" method="post">
         {% csrf_token %}
-        <input id="source" name="source-name" type="hidden" :value="src">
+        
         <ul class="source-list">
             <h4>Other availabe sources:</h4>
             {% for new_source in new_sources %}
-            <li class="source-item">
+            <li class="source-item-light">
                 <div class=left-side>{{ new_source.name }}</div>
 
                 <!-- IMPLEMENT ME -->
@@ -61,6 +55,10 @@
 
 
 {% load static %}
+<script
+  src="https://code.jquery.com/jquery-3.5.1.slim.js"
+  integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM="
+  crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="{% static 'news_scraper/scripts/user_sources.js'%}"></script>
 {% endblock body %}

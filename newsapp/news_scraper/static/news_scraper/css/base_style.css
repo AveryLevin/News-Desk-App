@@ -11,6 +11,17 @@ body {
     margin: 0px;
     background: var(--paper);
 }
+.col-md-8 {
+    margin-left: 10px;
+}
+
+img {
+    border: none;
+    width: 7%;
+    margin: 6px;
+    box-shadow: none;
+    float: left;
+  }
 
 input[type=submit],
 .button,

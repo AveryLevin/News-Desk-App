@@ -5,6 +5,7 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="{% static 'news_scraper/images/favicon.ico' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'news_scraper/css/base_style.css' %}">
     {% block head %}
     {% endblock %}
@@ -15,7 +16,10 @@
 
 <body>
     <div class="page-header">
-        <h1><a class='page-title' href="/news/">The News Desk</a></h1>
+        <a class='page-title' href="/news/">
+            <img src="{% static 'news_scraper/images/news_icon.png' %}" alt="">
+            <h1 class="title-text">The News Desk</h1>
+        </a>
     </div>
     <div class="content container">
         <div class="row">
@@ -24,7 +28,7 @@
             </div>
         </div>
     </div>
-    
+
 </body>
 
 </html>

@@ -15,8 +15,6 @@ var userHomeDataSample = {
 };
 
 var userHomeData = JSON.parse(document.getElementById('user-home-data').textContent);
-console.log(userHomeDataSample)
-console.log(userHomeData)
 
 Vue.component('article-item', {
     delimiters: ['[[', ']]'],
