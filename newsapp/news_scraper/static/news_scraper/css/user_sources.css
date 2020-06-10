@@ -31,6 +31,7 @@
     display: block;
     background: white;
     border-style: solid;
+    border-width: thin;
     border-color: var(--lavender);
     border-radius: 4px;
     box-shadow: 2px 2px 2px var(--dusty);
@@ -45,6 +46,7 @@
     display: block;
     background: rgb(211, 194, 194);
     border-style: solid;
+    border-width: thin;
     border-color: var(--lavender);
     border-radius: 4px;
     box-shadow: 2px 2px 2px var(--dusty);
@@ -58,6 +60,7 @@
 .left-side {
     display: block;
     border-style: solid;
+    border-width: thin;
     border-color: var(--lavender);
     color: white;
     border-radius: 4px;

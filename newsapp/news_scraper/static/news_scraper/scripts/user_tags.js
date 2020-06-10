@@ -1,5 +1,5 @@
 Vue.config.devtools = true;
-var rootURL = "http://127.0.0.1:8000/news"
+var rootURL = "http://192.168.1.158:8000/news"
 
 var userTagsDataSamples = {
     userTags: [

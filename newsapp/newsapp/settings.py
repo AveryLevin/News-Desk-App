@@ -25,7 +25,7 @@ SECRET_KEY = '_*llp(v%85&-kh3qk$p#nsfys4(4fsm%g!c^qrq9f)2kp+%#v='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.158', 'localhost', '127.0.0.1']
 
 # Django rest framework
 REST_FRAMEWORK = {

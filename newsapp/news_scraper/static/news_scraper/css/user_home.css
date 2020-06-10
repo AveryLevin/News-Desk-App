@@ -15,6 +15,7 @@
     display: block;
     background: white;
     border-style: solid;
+    border-width: thin;
     border-color: var(--lavender);
     border-radius: 4px;
     padding-left: 30px;
@@ -44,6 +45,7 @@
     display: block;
     background: white;
     border-style: solid;
+    border-width: thin;
     border-color: var(--lavender);
     border-radius: 4px;
     box-shadow: 2px 2px 2px var(--dusty);
@@ -63,6 +65,7 @@
     display: block;
     background: rgb(211, 194, 194);
     border-style: solid;
+    border-width: thin;
     border-color: var(--lavender);
     border-radius: 4px;
     box-shadow: 2px 2px 2px var(--dusty);

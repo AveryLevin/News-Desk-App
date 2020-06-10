@@ -17,7 +17,7 @@ body {
 
 img {
     border: none;
-    width: 7%;
+    width: 110px;
     margin: 6px;
     box-shadow: none;
     float: left;
@@ -28,7 +28,7 @@ input[type=submit],
 button {
     margin: 5px;
     border-style: solid;
-    border-color: black;
+    border-color: var(--lavender);
     border-width: thin;
     border-radius: 4px;
     box-shadow: 1px 1px 2px var(--lavender);
