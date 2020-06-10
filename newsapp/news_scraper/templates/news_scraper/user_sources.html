@@ -21,26 +21,6 @@
 
     <div id="vueinst"></div>
 
-    {% if new_sources %}
-    <form id="add_form" action="{% url 'news_scraper:user_sources' %}" method="">
-        {% csrf_token %}
-
-        <ul class="source-list">
-            <h4>Other availabe sources:</h4>
-            {% for new_source in new_sources %}
-            <li class="source-item-light">
-                <div class=left-side>{{ new_source.name }}</div>
-
-                <!-- IMPLEMENT ME -->
-                <input @click="updateValue('{{new_source.name}}')" type="submit" id="ad_src" class="edit-source"
-                    name="action" value="Add Source"></input>
-            </li>
-            {% endfor %}
-
-        </ul>
-    </form>
-    {% endif %}
-
 </div>
 
 

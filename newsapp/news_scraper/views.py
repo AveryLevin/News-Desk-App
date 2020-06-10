@@ -69,9 +69,22 @@ def dictify(m_arg: str, m_list: list) -> list:
                 sources_list.append(source_dict)
 
             return sources_list
+    elif m_arg == 'tags':
+        tags = m_list
+        if tags:
+            tags_list = []
+
+            for tag in tags:
+                tag_dict = {
+                    "name": tag.name
+                }
+                tags_list.append(tag_dict)
+
+            return tags_list
     return None
 
 
+@csrf_exempt
 @login_required
 def user_tags(request):
     if request.user.is_authenticated and request.user.is_active:
@@ -79,33 +92,91 @@ def user_tags(request):
         profile = request.user.userprofile
 
         if request.method == 'POST':
+            if request.POST.get('action'):
+                action = request.POST.get('action')
+                tag_name = request.POST.get('tag-name')
+                if action == 'Add' or action == 'Add Tag':
+                    try:
+                        tag = Tag.objects.get(name=tag_name)
+                        tag.adds += 1
+                    except:
+                        tag = Tag(name=tag_name, adds=1)
 
-            action = request.POST.get('action')
-            tag_name = request.POST.get('tag-name')
-            print(":::", type(tag_name))
-            if action == 'Add' or action == 'Add Tag':
-                try:
-                    tag = Tag.objects.get(name=tag_name)
-                    tag.adds += 1
-                except:
-                    tag = Tag(name=tag_name, adds=1)
+                    tag.save()
+                    profile.tags_list.add(tag)
 
-                tag.save()
-                profile.tags_list.add(tag)
+                    profile.save()
 
-            elif action == 'Delete Tag':
-                try:
-                    tag = Tag.objects.get(name=tag_name)
-                    tag.adds -= 1
-                except:
-                    return Http404("Couldn't find Tag")
+                user_tags = profile.tags_list.all()
+                all_tags = Tag.objects.all()
 
-                tag.save()
-                profile.tags_list.remove(tag)
+                popular_tags = all_tags.difference(user_tags).order_by('-adds')
+                popular_tags = popular_tags[:5]
 
-            profile.save()
+                user_tags = dictify('tags', user_tags)
+                popular_tags = dictify('tags', popular_tags)
 
-            return HttpResponseRedirect(reverse('news_scraper:user_tags'))
+                context = {
+                    'tagData': {
+                        'userTags': user_tags,
+                        'popularTags': popular_tags
+                    }
+                }
+
+                return HttpResponseRedirect(reverse("news_scraper:user_tags"))
+
+            else:
+                data = request.body
+                if data:
+                    data = json.loads(data)
+                    print(data)
+
+                    action = data.get('action')
+                    tag_name = data.get('name')
+                    print(":::", action)
+                    print(":::", tag_name)
+                    if action == 'Add' or action == 'Add Tag':
+                        try:
+                            tag = Tag.objects.get(name=tag_name)
+                            tag.adds += 1
+                        except:
+                            tag = Tag(name=tag_name, adds=1)
+
+                        tag.save()
+                        profile.tags_list.add(tag)
+
+                    elif action == 'Delete Tag':
+                        try:
+                            tag = Tag.objects.get(name=tag_name)
+                            tag.adds -= 1
+                        except:
+                            return Http404("Couldn't find Tag")
+
+                        tag.save()
+                        profile.tags_list.remove(tag)
+
+                    profile.save()
+
+                    user_tags = profile.tags_list.all()
+                    all_tags = Tag.objects.all()
+
+                    popular_tags = all_tags.difference(user_tags).order_by('-adds')
+                    popular_tags = popular_tags[:5]
+
+                    user_tags = dictify('tags', user_tags)
+                    popular_tags = dictify('tags', popular_tags)
+
+                    context = {
+                        'tagData': {
+                            'userTags': user_tags,
+                            'popularTags': popular_tags
+                        }
+                    }
+
+                    return JsonResponse(data=context)
+
+                else:
+                    return JsonResponse(data={})
 
         else:
 
@@ -120,10 +191,15 @@ def user_tags(request):
                     popular_tags.remove(tag)"""
             popular_tags = popular_tags[:5]
 
+            user_tags = dictify('tags', user_tags)
+            popular_tags = dictify('tags', popular_tags)
+
             context = {
                 'user': request.user,
-                'user_tags': user_tags,
-                'popular_tags': popular_tags
+                'tagData': {
+                    'userTags': user_tags,
+                    'popularTags': popular_tags
+                }
             }
             return render(request, 'news_scraper/user_tags.html', context)
 
