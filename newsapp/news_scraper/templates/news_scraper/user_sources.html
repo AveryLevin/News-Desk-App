@@ -11,7 +11,7 @@
 
 {% block body %}
 
-<script>csrftoken = "{{csrf_token}}" </script>
+{{ sourceData|json_script:"user-source-data" }}
 
 <h1>{{user.username.capitalize}}'s News Sources</h1>
 <h3>Here, you can choose the news outlets you want to get your articles from.</h3>
@@ -19,23 +19,12 @@
 
 <div id="app" class="user_sources">
 
-    <form id="remove_form" action="{% url 'news_scraper:user_sources' %}" method="post">
-        
-        <ul class="source-list">
-            <h4>Your current sources:</h4>
-            <current-source-item
-            v-for="source in currentSources"
-            v-bind:name="source.name">
-        </current-source-item>
-
-        </ul>
-    </form>
-
+    <div id="vueinst"></div>
 
     {% if new_sources %}
-    <form id="add_form" action="{% url 'news_scraper:user_sources' %}" method="post">
+    <form id="add_form" action="{% url 'news_scraper:user_sources' %}" method="">
         {% csrf_token %}
-        
+
         <ul class="source-list">
             <h4>Other availabe sources:</h4>
             {% for new_source in new_sources %}
@@ -43,7 +32,8 @@
                 <div class=left-side>{{ new_source.name }}</div>
 
                 <!-- IMPLEMENT ME -->
-                <input @click="updateValue('{{new_source.name}}')" type="submit" id="ad_src" class="edit-source" name="action" value="Add Source"></input>
+                <input @click="updateValue('{{new_source.name}}')" type="submit" id="ad_src" class="edit-source"
+                    name="action" value="Add Source"></input>
             </li>
             {% endfor %}
 
@@ -55,10 +45,6 @@
 
 
 {% load static %}
-<script
-  src="https://code.jquery.com/jquery-3.5.1.slim.js"
-  integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM="
-  crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="{% static 'news_scraper/scripts/user_sources.js'%}"></script>
 {% endblock body %}

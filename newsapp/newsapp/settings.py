@@ -31,7 +31,14 @@ ALLOWED_HOSTS = []
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication'
-    ]
+    ],
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    )
+
 }
 
 # Application definition
@@ -131,5 +138,5 @@ STATIC_URL = '/static/'
 LOGIN_URL = '/news/login/'
 
 # MEDIA_DIR = os.path.join(BASE_DIR, 'media')
-# MEDIA_ROOT = MEDIA_DIR 
+# MEDIA_ROOT = MEDIA_DIR
 # MEDIA_URL = '/ media/'

@@ -3,7 +3,7 @@ var rootURL = "http://127.0.0.1:8000/news"
 
 var userSourcesDataSamples = {
     currentSources: [
-        { name: "Ex.1" },
+        { name: "Ex1" },
         { name: "Ex.2" },
         { name: "Ex.3" },
     ],
@@ -14,23 +14,48 @@ var userSourcesDataSamples = {
     ]
 };
 
+
+var userSourcesData = JSON.parse(document.getElementById('user-source-data').textContent);
+console.log(userSourcesData);
+
+
+Vue.component('curr-source-list', {
+    delimiters: ['[[', ']]'],
+    data: function () {
+        return {
+
+        };
+    },
+    template: `
+    <ul class="source-list">
+        <h4>Your current sources:</h4>
+        <current-source-item 
+        v-for="source in null" 
+        v-bind:name="source.name">
+        </current-source-item>
+
+    </ul>
+    `,
+})
+
 Vue.component('current-source-item', {
     delimiters: ['[[', ']]'],
     data: function () {
         return {
             classType: "source-item-light",
             postTo: rootURL + "/user_home/sources"
-        }
+        };
     },
     props: {
-        name: String
+        name: String,
+        source: Object
     },
     template: `
     <li :class="classType">
                 <div class=left-side>[[ name ]]</div>
                 
                 <button 
-                @click="newName" 
+                @click="removeSource" 
                 @mouseover="makeItemDark"
                 @mouseleave="makeItemLight"
                 id="rm_src" class="edit-source">Remove Source</button>
@@ -46,14 +71,17 @@ Vue.component('current-source-item', {
         makeItemLight: function () {
             this.classType = "source-item-light";
         },
-        newName: function () {
+        removeSource: function () {
             console.log("Attempting POST Request to " + this.postTo);
-            let postData = JSON.stringify(this.data());
+            let postData = JSON.stringify({
+                action: "Remove Source",
+                name: this.name
+            });
+            var self = this;
             fetch(this.postTo, {
                 method: 'post',
                 credentials: "same-origin",
                 headers: {
-                    "X-CSRFTOKEN": csrftoken,
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
@@ -69,12 +97,18 @@ Vue.component('current-source-item', {
 
                     //check response data
                     response.json().then(function (data) {
-                        console.log(data);
+
+                        temp = data.sourceData;
+                        userSourcesData = temp;
+                        console.log("sending:");
+                        console.log(userSourcesData);
+                        self.$emit('sources-changed', userSourcesData);
                     });
                 }
             ).catch(function (err) {
                 console.log('Fetch Error :-S', err);
             });
+
         }
     }
 })
@@ -109,13 +143,12 @@ Vue.component('additional-source-item', {
     }
 })
 
+
 var app = new Vue({
     delimiters: ['[[', ']]'],
-    el: '#app',
-    data: function () {
-        return {
-            userSourcesData: userSourcesDataSamples
-        }
+    el: '#vueinst',
+    data: {
+        userSourcesData: userSourcesData
     },
     computed: {
         currentSources: function () {
@@ -125,5 +158,22 @@ var app = new Vue({
             return this.userSourcesData.additionalSources;
         },
     },
+    methods: {
+        updateSources: function (newData) {
+            console.log("updating data:");
+            console.log(newData);
+            this.userSourcesData = newData;
+        }
+    },
+    template: `
+    <ul class="source-list">
+        <h4>Your current sources:</h4>
+        <current-source-item 
+        v-for="source in this.currentSources" 
+        v-bind:name="source.name"
+        v-on:sources-changed="updateSources">
+        </current-source-item>
+
+    </ul>
+    `,
 });
-console.log(csrftoken)

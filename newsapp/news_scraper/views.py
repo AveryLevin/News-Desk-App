@@ -15,6 +15,7 @@ import json
 
 # Create your views here.
 
+
 @login_required()
 def user_home(request):
     if request.user.is_authenticated and request.user.is_active:
@@ -51,14 +52,24 @@ def dictify(m_arg: str, m_list: list) -> list:
                 article_dict = {
                     "title": article.title,
                     "source": article.source,
-                    "redir": article.redir 
+                    "redir": article.redir
                 }
                 articles_list.append(article_dict)
 
             return articles_list
+    elif m_arg == 'sources':
+        sources = m_list
+        if sources:
+            sources_list = []
 
+            for source in sources:
+                source_dict = {
+                    "name": source.name
+                }
+                sources_list.append(source_dict)
+
+            return sources_list
     return None
-    
 
 
 @login_required
@@ -91,7 +102,7 @@ def user_tags(request):
 
                 tag.save()
                 profile.tags_list.remove(tag)
-            
+
             profile.save()
 
             return HttpResponseRedirect(reverse('news_scraper:user_tags'))
@@ -99,11 +110,11 @@ def user_tags(request):
         else:
 
             user_tags = profile.tags_list.all()
-            
+
             all_tags = Tag.objects.all()
-            
+
             popular_tags = all_tags.difference(user_tags).order_by('-adds')
-            
+
             """for tag in popular_tags:
                 if tag in user_tags or tag.adds <= 0:
                     popular_tags.remove(tag)"""
@@ -116,6 +127,7 @@ def user_tags(request):
             }
             return render(request, 'news_scraper/user_tags.html', context)
 
+
 @csrf_exempt
 @login_required()
 def user_sources(request):
@@ -124,40 +136,66 @@ def user_sources(request):
         profile = request.user.userprofile
 
         if request.method == 'POST':
+            data = request.body
+            if data:
+                data = json.loads(data)
+                print(data)
 
-            action = request.POST.get('action')
-            source_name = request.POST.get('source-name')
-            
-            if action == 'Add Source':
-                try:
-                    
-                    source = Source.objects.get(name=source_name)
-                    profile.sources_list.add(source)
-                except:
-                    print("Couldn't find source.")
-                    return Http404("Couldn't find source.")
+                action = data.get('action')
+                source_name = data.get('name')
+                print(action)
+                print(source_name)
+                if action == 'Add Source':
+                    try:
 
-            elif action == 'Remove Source':
-                try:
-                    
-                    source = profile.sources_list.get(name=source_name)
-                    profile.sources_list.remove(source)
-                except:
-                    print("Couldn't find source.")
-                    return Http404("Couldn't find source.")
-            profile.save()
+                        source = Source.objects.get(name=source_name)
+                        profile.sources_list.add(source)
+                    except:
+                        print("Couldn't find source to add.")
+                        return Http404("Couldn't find source.")
 
-            return HttpResponseRedirect(reverse('news_scraper:user_sources'))
+                elif action == 'Remove Source':
+                    try:
+                        source = profile.sources_list.get(name=source_name)
+                        profile.sources_list.remove(source)
+                    except:
+                        print("Couldn't find source to remove.")
+                        return Http404("Couldn't find source.")
+                profile.save()
 
+                user_sources = profile.sources_list.all()
+                all_sources = Source.objects.all()
+                new_sources = all_sources.difference(
+                    user_sources).order_by('-name')
+
+                user_sources = dictify('sources', user_sources)
+                new_sources = dictify('sources', new_sources)
+
+                context = {
+                    'sourceData': {
+                        'currentSources': user_sources,
+                        'additionalSources': new_sources
+                    }
+                }
+
+                return JsonResponse(data=context)
+            else:
+                return JsonResponse(data={})
         else:
             user_sources = profile.sources_list.all()
             all_sources = Source.objects.all()
-            new_sources = all_sources.difference(user_sources).order_by('-name')
+            new_sources = all_sources.difference(
+                user_sources).order_by('-name')
+
+            user_sources = dictify('sources', user_sources)
+            new_sources = dictify('sources', new_sources)
 
             context = {
                 'user': request.user,
-                'user_sources': user_sources,
-                'new_sources': new_sources
+                'sourceData': {
+                    'currentSources': user_sources,
+                    'additionalSources': new_sources
+                }
             }
             return render(request, 'news_scraper/user_sources.html', context)
 
