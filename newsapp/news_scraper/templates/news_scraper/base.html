@@ -18,7 +18,17 @@
     <div class="page-header">
         <a class='page-title' href="/news/">
             <img src="{% static 'news_scraper/images/news_icon.png' %}" alt="">
-            <h1 class="title-text">The News Desk</h1>
+            <p class="title-text">The News Desk</p>
+            <a href="{% url 'news_scraper:user_sources' %}" class="button" id="header-button">
+                <img class="header-button-img" src="{% static 'news_scraper/images/sources.png' %}" alt="">
+                <span class="tooltip">Manage Sources</span></a>
+            <a href="{% url 'news_scraper:user_tags' %}" class="button" id="header-button">
+                <img class="header-button-img" src="{% static 'news_scraper/images/pushpin.png' %}" alt="">
+                <span class="tooltip">Manage Tags</span></a>
+
+            <a href="{% url 'news_scraper:logout' %}" class="button" id="header-button">
+                <img class="header-button-img" src="{% static 'news_scraper/images/logout.png' %}" alt="">
+            <span class="tooltip">Logout</span></a>
         </a>
     </div>
     <div class="content container">
