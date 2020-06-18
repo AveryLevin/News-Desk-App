@@ -31,12 +31,13 @@ Vue.component('current-tag-item', {
     },
     template: `
     <li :class="classType">
-                <div class=left-side>[[ name ]]</div>
-                
-                <button 
-                @click="removeTag" 
+                <div class=left-side 
                 @mouseover="makeItemDark"
                 @mouseleave="makeItemLight"
+                >[[ name ]]</div>
+                
+                <button 
+                @click="removeTag"
                 id="rm_src" class="edit-tag">Delete Tag</button>
             </li>
     `,
@@ -106,13 +107,14 @@ Vue.component('additional-tag-item', {
     },
     template: `
     <li :class="classType">
-                <div class=left-side>[[ name ]]</div>
-                
-                <button 
-                @click="removeTag" 
+                <div class=left-side 
                 @mouseover="makeItemDark"
                 @mouseleave="makeItemLight"
-                id="rm_src" class="edit-tag">Add Tag</button>
+                >[[ name ]]</div>
+                
+                <button 
+                @click="addTag"
+                id="ad_src" class="edit-tag">Add Tag</button>
             </li>
     `,
     computed: {
@@ -125,7 +127,7 @@ Vue.component('additional-tag-item', {
         makeItemLight: function () {
             this.classType = "tag-item-light";
         },
-        removeTag: function () {
+        addTag: function () {
             console.log("Attempting POST Request to " + this.postTo);
             let postData = JSON.stringify({
                 action: "Add Tag",

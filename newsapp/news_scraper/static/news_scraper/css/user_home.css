@@ -15,8 +15,8 @@
 
 .article-list {
     display: block;
-    background: #dbe6f0;
-    border-style: none;
+    background: white;
+    border-style: solid;
     border-width: thin;
     border-color: var(--lavender);
     border-radius: 4px;
@@ -79,7 +79,6 @@
 }
 
 .article-item-dark a {
-    text-decoration: none;
     color: var(--lavender);
 }
 

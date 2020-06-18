@@ -42,7 +42,7 @@
 
 .tag-item-dark {
     display: block;
-    background: rgb(211, 194, 194);
+    background: rgb(235, 235, 235);
     border-style: solid;
     border-width: thin;
     border-color: var(--lavender);
@@ -57,23 +57,28 @@
 
 .left-side {
     display: block;
-    border-style: solid;
+    border-style: none;
     border-width: thin;
     border-color: var(--lavender);
-    color: white;
-    border-radius: 4px;
-    padding-left: 30px;
-    padding-top: 00px;
-    padding-bottom: 03px;
+    color: var(--lavender);
+    border-radius: 8px;
+    padding: 8px;
     margin: 3px;
-    width: 100px;
-    background: var(--overcast);
+    width: fit-content;
+    cursor: pointer;
+    text-align: center;
+}
+
+.left-side:hover {
+    background: radial-gradient(ellipse, rgb(250, 250, 250) 30%, rgb(235, 235, 235) 80%);
 }
 
 .edit-tag {
     float: right;
     transform: translate(0px, -35px);
-    width: auto;
+    border: none !important;
+    width: auto !important;
+    background: transparent;
 }
 
 .tag-form {

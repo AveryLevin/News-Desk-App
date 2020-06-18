@@ -32,12 +32,13 @@ Vue.component('current-source-item', {
     },
     template: `
     <li :class="classType">
-                <div class=left-side>[[ name ]]</div>
+                <div class=left-side
+                @mouseover="makeItemDark"
+                @mouseleave="makeItemLight"
+                >[[ name ]]</div>
                 
                 <button 
                 @click="removeSource" 
-                @mouseover="makeItemDark"
-                @mouseleave="makeItemLight"
                 id="rm_src" class="edit-source">Remove Source</button>
             </li>
     `,
@@ -107,12 +108,13 @@ Vue.component('additional-source-item', {
     },
     template: `
     <li :class="classType">
-                <div class=left-side>[[ name ]]</div>
-                <button 
-                @click="removeSource" 
+                <div class=left-side
                 @mouseover="makeItemDark"
                 @mouseleave="makeItemLight"
-                id="rm_src" class="edit-source">Add Source</button>
+                >[[ name ]]</div>
+                <button 
+                @click="addSource" 
+                id="ad_src" class="edit-source">Add Source</button>
     </li>
     `,
     computed: {
@@ -125,7 +127,7 @@ Vue.component('additional-source-item', {
         makeItemLight: function () {
             this.classType = "source-item-light";
         },
-        removeSource: function () {
+        addSource: function () {
             console.log("Attempting POST Request to " + this.postTo);
             let postData = JSON.stringify({
                 action: "Add Source",
