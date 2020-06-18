@@ -1,5 +1,5 @@
 Vue.config.devtools = true;
-var rootURL = "http://192.168.1.158:8000/news"
+var rootURL = "https://news-desk-app.herokuapp.com/news"
 
 var userTagsDataSamples = {
     userTags: [
